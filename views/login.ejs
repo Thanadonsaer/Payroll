@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/salary.png">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <!-- Offline -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-warning">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/employee">Employee</a>
+                    </li>
+                    <li class="nav-item">
+                       
+                    </li>
+                </ul>
+                <div class="nav-link" style="margin-left: auto; padding-right: 1em;">
+                    <a class="nav-link" href="/login">Login</a>
+                </div> 
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        <div class="card">
+            <div class="card-header">
+                <h1 class="text-center">LOGIN</h1>
+            </div>
+            <form action="/auth/login" method="post" onsubmit="return validateForm()">
+                <div class="card-body p-5">
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="username" name="username" autofocus required>
+                        <label for="Username">Username</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                            oninput="validatePassword()"required>
+                        <div class="mt-1" id="passwordStrength" style="color: red;"></div>
+                        <label for="Password">Password</label>
+                    </div>
+                    <div class="d-grid mt-3">
+                        <button class="btn btn-success" type="submit">Sign in</button>
+                    </div>
+
+                </div>
+                <!-- <div class="card-footer text-end">
+                
+            </div> -->
+            </form>
+
+        </div>
+        <% if(messages.error){ %>
+            <div class="alert alert-danger" style=" width: 100%; min-width: 600px;" role="alert">
+                <%= messages.error %>
+            </div>
+            <% } %>
+    </div>
+    <script>
+        function validateForm() {
+            var password = document.getElementById("Password").value;
+
+            // ตรวจสอบความปลอดภัยอื่น ๆ ตามที่คุณต้องการ เช่น ต้องมีตัวเลข, ตัวอักษรใหญ่, ตัวอักษรเล็ก
+            var hasNumber = /\d/.test(password);
+            var hasUppercase = /[A-Z]/.test(password);
+            var hasLowercase = /[a-z]/.test(password);
+
+            if (!hasNumber || !hasUppercase || !hasLowercase) {
+                alert("รหัสผ่านต้องประกอบด้วยตัวเลข, ตัวอักษรใหญ่, และตัวอักษรเล็ก 8 ตัว");
+                return false;
+            }
+
+
+            if (password.length < 8) {
+                alert("รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัว");
+                return false;
+            }
+            return true;
+        }
+        function validatePassword() {
+            var password = document.getElementById("Password").value;
+
+            // ตรวจสอบความยาวของรหัสผ่าน
+            if (password.length < 8 && password) {
+                document.getElementById("passwordStrength").innerHTML = "รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัว";
+            } else {
+                document.getElementById("passwordStrength").innerHTML = "";
+            }
+
+            // ตรวจสอบความปลอดภัยอื่น ๆ ตามที่คุณต้องการ เช่น ต้องมีตัวเลข, ตัวอักษรใหญ่, ตัวอักษรเล็ก
+            var hasNumber = /\d/.test(password);
+            var hasUppercase = /[A-Z]/.test(password);
+            var hasLowercase = /[a-z]/.test(password);
+
+            if ((!hasNumber || !hasUppercase || !hasLowercase)&& password) {
+                document.getElementById("passwordStrength").innerHTML += "รหัสผ่านต้องประกอบด้วยตัวเลข, ตัวอักษรใหญ่, และตัวอักษรเล็ก";
+            }
+        }
+    </script>
+    <script src="/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

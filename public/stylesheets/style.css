@@ -1,0 +1,28 @@
+* {
+    font-family: 'Prompt', sans-serif;
+}
+
+table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control:before,
+table.dataTable.dtr-inline.collapsed>tbody>tr>th.dtr-control:before {
+    content: "🟢";
+}
+
+table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td.dtr-control:before,
+table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th.dtr-control:before {
+    content: "⛔";
+}
+
+.navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link svg {
+    margin: 0 10px 1px 5px ;
+
+    /* Adjust the margin as needed */
+}

@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Employee</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/salary.png">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+
+    <!-- Online -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+
+    <!-- Offline -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <style>
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button.next {
+            float: right;
+        }
+
+        button.prev {
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-warning">
+        <div class="container-fluid">
+            <% if(messages.isLogin){ %>
+            <a class="navbar-brand" href="/"><%= messages.isLogin %></a>
+            <% }else{ %>
+            <a class="navbar-brand" href="/">Navbar</a>
+            <% } %>
+            <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page"
+                            href="/">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#"
+                            role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Menu
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/employee/account" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                    
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                  </svg>Account</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/employee" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                    
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                  </svg>Employee</a>
+                            </li>
+
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="/employee/register"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
+                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                        <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4"/>
+                                      </svg>Register</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+                <div class="nav-link"
+                    style="margin-left: auto; padding-right: 1em;">
+                    <a class="nav-link" href="/employee/logout">LogOut</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="d-flex justify-content-center">
+        
+ 
+    <div class="center" style="margin-top: 50px">
+        <% if(messages.error){ %>
+            <div class="alert alert-danger" style=" width: 40em; min-width: 600px;" role="alert">
+                <%= messages.error %>
+            </div>
+            <% } %>
+                <div class="card d-flex justify-content-center" style=" width: 40em; min-width: 600px;">
+                    <div class="card-header">
+                        Add employee
+                    </div>
+                    <div class="card-body" style=" display: grid;justify-items: center;">
+                        <form action="/employee/add" method="post">
+                            <div class="step active" data-step="1">
+                                <h2>Step 1</h2>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text">ID</span>
+                                            <input type="text" class="form-control" name="ID" value="<%= ID %>"
+                                                autocomplete="off" maxlength="5" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group">
+                                            <span class="input-group-text">ID_CARD</span>
+                                            <input type="text" class="form-control" name="ID_CARD"
+                                                value="<%= ID_CARD %>" autocomplete="off" maxlength="8" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group mt-2">
+                                    <label class="form-text mb-1">ชื่อ-นามสกุล</label>
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <select class="form-select" name="TH_Prefix" required>
+                                                <option value="" ${TH_Prefix==='' ? 'selected' : '' } hidden>Choose...</option>
+                                                <option value="นาย"${TH_Prefix==='นาย' ? 'selected' : '' }>นาย</option>
+                                                <option value="นาง"${TH_Prefix==='นาง' ? 'selected' : '' }>นาง</option>
+                                                <option value="นางสาว"${TH_Prefix==='นางสาว' ? 'selected' : '' }>นางสาว</option>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" name="TH_First_Name"
+                                                value="<%= TH_First_Name %>" placeholder="ชื่อ" autocomplete="off"
+                                                required>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" name="TH_Last_Name"
+                                                value="<%= TH_Last_Name %>" placeholder="นามสกุล" autocomplete="off"
+                                                required>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label class="form-text mb-1">Full Name</label>
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <select class="form-select" name="EN_Prefix" required>
+                                                <option value=""${EN_Prefix===''  ? 'selected' : '' } hidden>Choose...</option>
+                                                <option value="Mr."${EN_Prefix==='Mr.' ? 'selected' : '' }>Mr.</option>
+                                                <option value="Ms."${EN_Prefix==='Ms.' ? 'selected' : '' }>Ms.</option>
+                                                <option value="Mrs."${EN_Prefix==='Mrs.' ? 'selected' : '' }>Mrs.</option>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" name="EN_First_Name"
+                                                value="<%= EN_First_Name %>" placeholder="First-Name" autocomplete="off"
+                                                required>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" name="EN_Last_Name"
+                                                value="<%= EN_Last_Name %>" placeholder="Last-Name" autocomplete="off"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <span class="input-group-text">เลขบัตรประชาชน</span>
+                                            <input type="text" class="form-control" name="ID_card_number"
+                                                pattern="\d{13}" title="กรุณากรอกตัวเลข 13 หลัก"
+                                                value="<%= ID_card_number %>" autocomplete="off" maxlength="13"
+                                                required>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-auto">
+                                        <select class="form-select" name="Status" required>
+                                            <option value="" ${Status==='' ? 'selected' : '' } hidden>สถานะ</option>
+                                            <option value="โสด"${Status==='โสด' ? 'selected' : '' } >โสด</option>
+                                            <option value="สมรส"${Status==='สมรส' ? 'selected' : '' } >สมรส</option>
+                                            <option value="หย่า"${Status==='หย่า' ? 'selected' : '' } >หย่า</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <span class="input-group-text">เลขประกันสังคม</span>
+                                            <input type="text" class="form-control" name="Social_security_number"
+                                                pattern="\d{13}" title="กรุณากรอกตัวเลข 13 หลัก" autocomplete="off"
+                                                maxlength="13" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group  mt-2" required>
+                                    <label>Gender</label><br>
+                                    <input type="radio" id="Male" name="Gender" value="Male">
+                                    <label for="Male">Male</label>
+
+                                    <input type="radio" id="Female" name="Gender" value="Female">
+                                    <label for="Female">Female</label>
+                                </div>
+                                <div class="form-group mt-2 text-end">
+                                    <button type="button" class="next" onclick="nextStep(1)">Next</button>
+                                </div>
+                            </div>
+
+                            <div class="step" data-step="2" style="width: 100%;">
+                                <h2>Step 2</h2>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <span class="input-group-text">ฝ่าย</span>
+                                            <select class="form-select" name="group" required>
+                                                <option value="" ${group==='' ? 'selected' : '' } hidden>Choose...
+                                                </option>
+                                                <option value="ขาย" ${group==='ขาย' ? 'selected' : '' }>ขาย</option>
+                                                <option value="บัญชี" ${group==='บัญชี' ? 'selected' : '' }>บัญชี
+                                                </option>
+                                                <option value="ผลิต" ${group==='ผลิต' ? 'selected' : '' }>ผลิต</option>
+                                                <option value="เทคนิค" ${group==='เทคนิค' ? 'selected' : '' }>เทคนิค
+                                                </option>
+                                                <option value="กรรมกร" ${group==='กรรมกร' ? 'selected' : '' }>กรรมกร
+                                                </option>
+                                                <option value="บัญชี-การเงิน" ${group==='บัญชี-การเงิน' ? 'selected'
+                                                    : '' }>บัญชี-การเงิน</option>
+                                                <option value="คลังสินค้า-บริการ" ${group==='คลังสินค้า-บริการ'
+                                                    ? 'selected' : '' }>คลังสินค้า-บริการ</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <span class="input-group-text">แผนก</span>
+                                            <select class="form-select" name="department" required>
+                                                <option value="" ${department==='' ? 'selected' : '' } hidden>Choose...
+                                                </option>
+                                                <option value="ขาย" ${department==='ขาย' ? 'selected' : '' }>ขาย
+                                                </option>
+                                                <option value="บัญชี" ${department==='บัญชี' ? 'selected' : '' }>บัญชี
+                                                </option>
+                                                <option value="ผลิต" ${department==='ผลิต' ? 'selected' : '' }>ผลิต
+                                                </option>
+                                                <option value="ขับรถ" ${department==='ขับรถ' ? 'selected' : '' }>ขับรถ
+                                                </option>
+                                                <option value="ทั่วไป" ${department==='ทั่วไป' ? 'selected' : '' }>
+                                                    ทั่วไป</option>
+                                                <option value="ช่างซ่อมบำรุง" ${department==='ช่างซ่อมบำรุง'
+                                                    ? 'selected' : '' }>ช่างซ่อมบำรุง</option>
+                                                <option value="คลังสินค้า-บริการ" ${department==='คลังสินค้า-บริการ'
+                                                    ? 'selected' : '' }>คลังสินค้า-บริการ</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group mt-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <span class="input-group-text">ตำแหน่ง</span>
+                                                <select class="form-select" name="position" required>
+                                                    <option value="" ${position==='' ? 'selected' : '' } hidden>
+                                                        Choose...</option>
+                                                    <option value="พนักงานบัญชี" ${position==='พนักงานบัญชี'
+                                                        ? 'selected' : '' }>พนักงานบัญชี</option>
+                                                    <option value="พนักงานขาย" ${position==='พนักงานขาย' ? 'selected'
+                                                        : '' }>พนักงานขาย</option>
+                                                    <option value="จัดซื้อ" ${position==='จัดซื้อ' ? 'selected' : '' }>
+                                                        จัดซื้อ</option>
+                                                    <option value="ธุรการ" ${position==='ธุรการ' ? 'selected' : '' }>
+                                                        ธุรการ</option>
+                                                    <option value="คนขับรถ" ${position==='คนขับรถ' ? 'selected' : '' }>
+                                                        คนขับรถ</option>
+                                                    <option value="คุมเครื่องผลิต" ${position==='คุมเครื่องผลิต'
+                                                        ? 'selected' : '' }>คุมเครื่องผลิต</option>
+                                                    <option value="เติทวัตถุดิบ" ${position==='เติทวัตถุดิบ'
+                                                        ? 'selected' : '' }>เติทวัตถุดิบ</option>
+                                                    <option value="พนักงานทั่วไป" ${position==='พนักงานทั่วไป'
+                                                        ? 'selected' : '' }>พนักงานทั่วไป</option>
+                                                    <option value="ช่างซ่อมบำรุง" ${position==='ช่างซ่อมบำรุง'
+                                                        ? 'selected' : '' }>ช่างซ่อมบำรุง</option>
+                                                    <option value="คลังสินค้า-บริการ" ${position==='คลังสินค้า-บริการ'
+                                                        ? 'selected' : '' }>คลังสินค้า-บริการ</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <span class="input-group-text">เขตทำงาน</span>
+                                                <select class="form-select" name="scope" required>
+                                                    <option value="" ${scope==='' ? 'selected' : '' } hidden>Choose...
+                                                    </option>
+                                                    <option value="บัญชี" ${scope==='บัญชี' ? 'selected' : '' }>บัญชี
+                                                    </option>
+                                                    <option value="ขาย" ${scope==='ขาย' ? 'selected' : '' }>ขาย</option>
+                                                    <option value="บริการทั่วไป" ${scope==='บริการทั่วไป' ? 'selected'
+                                                        : '' }>บริการทั่วไป</option>
+                                                    <option value="ซ่อมบำรุง" ${scope==='ซ่อมบำรุง' ? 'selected' : '' }>
+                                                        ซ่อมบำรุง</option>
+                                                    <option value="ส่วนผลิต" ${scope==='ส่วนผลิต' ? 'selected' : '' }>
+                                                        ส่วนผลิต</option>
+                                                    <option value="กรรมกร" ${scope==='กรรมกร' ? 'selected' : '' }>กรรมกร
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group mt-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <span class="input-group-text">สถานที่ทำงาน</span>
+                                                <select class="form-select" name="place" required>
+                                                    <option value="" ${place==='' ? 'selected' : '' } hidden>Choose...
+                                                    </option>
+                                                    <option value="สำนักงานใหญ่" ${place==='สำนักงานใหญ่' ? 'selected'
+                                                        : '' }>สำนักงานใหญ่</option>
+                                                    <option value="สำนักงานขาย" ${place==='สำนักงานขาย' ? 'selected'
+                                                        : '' }>สำนักงานขาย</option>
+                                                    <option value="คลังสินค้าสำนักงานใหญ่"
+                                                        ${place==='คลังสินค้าสำนักงานใหญ่' ? 'selected' : '' }>
+                                                        คลังสินค้าสำนักงานใหญ่</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <span class="input-group-text">ระดับ</span>
+                                                <select class="form-select" name="level" required>
+                                                    <option value="" ${level==='' ? 'selected' : '' } hidden>Choose...
+                                                    </option>
+                                                    <option value="Low" ${level==='Low' ? 'selected' : '' }>Low</option>
+                                                    <option value="Mid" ${level==='Mid' ? 'selected' : '' }>Mid</option>
+                                                    <option value="High" ${level==='High' ? 'selected' : '' }>High
+                                                    </option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <span class="input-group-text">ประเภท</span>
+                                                <select class="form-select" name="type" required>
+                                                    <option value="" ${type==='' ? 'selected' : '' } hidden>Choose...
+                                                    </option>
+                                                    <option value="รายวัน" ${type==='รายวัน' ? 'selected' : '' }>รายวัน
+                                                    </option>
+                                                    <option value="รายเดือน" ${type==='รายเดือน' ? 'selected' : '' }>
+                                                        รายเดือน</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <span class="input-group-text">สถานะทำงาน</span>
+                                                <select class="form-select" name="status_work" required>
+                                                    <option value="" ${status_work==='' ? 'selected' : '' } hidden>
+                                                        Choose...</option>
+                                                    <option value="ทดลองงาน" ${status_work==='ทดลองงาน' ? 'selected'
+                                                        : '' }>ทดลองงาน</option>
+                                                    <option value="ปฎิบัติงาน" ${status_work==='ปฎิบัติงาน' ? 'selected'
+                                                        : '' }>ปฎิบัติงาน</option>
+                                                    <option value="เลิกจ้าง" ${status_work==='เลิกจ้าง' ? 'selected'
+                                                        : '' }>เลิกจ้าง</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <span class="input-group-text">วันเริ่มงาน</span>
+                                                <input type="date" class="form-control" value="start_date" 
+                                                    name="start_date" required>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <span class="input-group-text">จำนวนวันทดลองงาน</span>
+                                                <input type="text" class="form-control" placeholder="0" ${probation===''
+                                                    ? 'value="0"' : 'value="probation"' } name="probation">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <span class="input-group-text">วันที่บรรจุ</span>
+                                                <input type="date" class="form-control" value="placement_date"
+                                                    name="placement_date">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <span class="input-group-text">วันออก</span>
+                                                <input type="date" class="form-control" value="end_date"
+                                                    name="end_date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mt-4 text-end">
+
+                                    <button type="button" class="prev" onclick="prevStep(2)">Previous</button>
+                                    <button type="submit">Submit</button>
+                                </div>
+                            </div>
+
+                    </div>
+                    </form>
+                </div>
+         </div>
+    </div>
+</div>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script> -->
+    <script src="/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script>
+        let currentStep = 1;
+
+        function nextStep(step) {
+            document.querySelector(`.step[data-step="${step}"]`).classList.remove('active');
+            document.querySelector(`.step[data-step="${step + 1}"]`).classList.add('active');
+            currentStep = step + 1;
+        }
+
+        function prevStep(step) {
+            document.querySelector(`.step[data-step="${step}"]`).classList.remove('active');
+            document.querySelector(`.step[data-step="${step - 1}"]`).classList.add('active');
+            currentStep = step - 1;
+        }
+        
+    </script>
+</body>
+
+</html>
